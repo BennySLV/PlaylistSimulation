@@ -69,19 +69,19 @@ public class PlaylistMain {
         while(sectionRunning) {
             System.out.println("Please select from the following options: " +
                     "\n\t 1 - Create a new song and add it to the library" +
-                    "\n\t 2 - Modify an existing song" +
-                    "\n\t 3 - Delete an existing song" +
-                    "\n\t 4 - View all stored songs in the library");
+                    "\n\t 2 - Delete an existing song" +
+                    "\n\t 3 - View all stored songs in the library");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
                 case 1:
+                    this.getPlaylist().getLibrary().addSongToLibrary();
                     break;
                 case 2:
+                    this.getPlaylist().getLibrary().removeSongFromLibrary();
                     break;
                 case 3:
-                    break;
-                case 4:
+                    this.getPlaylist().getLibrary().viewSongsInLibrary();
                     break;
             }
             if(!continueSection()) {
@@ -105,7 +105,7 @@ public class PlaylistMain {
         boolean sectionRunning = true;
         while(sectionRunning) {
             System.out.println("Please select from the following options: " +
-                    "\n\t 1 - Create a new album and add it to the library" +
+                    "\n\t 1 - Create and add a new album to the library" +
                     "\n\t 2 - Delete an existing album" +
                     "\n\t 3 - Add song to an existing album" +
                     "\n\t 4 - Remove song from an album" +
@@ -240,22 +240,26 @@ public class PlaylistMain {
      */
     private void runApplication() {
         System.out.println("Welcome to your playlist! Please select from the following options: " +
-                "\n\t 1 - Create a new album" +
-                "\n\t 2 - Add or remove songs and/or albums from the playlist" +
-                "\n\t 3 - Access the playlist" +
-                "\n\t 4 - Quit the application");
+                "\n\t 1 - Create a new song" +
+                "\n\t 2 - Create a new album" +
+                "\n\t 3 - Add or remove songs and/or albums from the playlist" +
+                "\n\t 4 - Access the playlist" +
+                "\n\t 5 - Quit the application");
+
         byte menuSelection = SCANNER.nextByte();
         switch(menuSelection) {
             case 1:
+                songSection();
+            case 2:
                 albumSection();
                 break;
-            case 2:
+            case 3:
                 librarySection();
                 break;
-            case 3:
+            case 4:
                 playlistSection();
                 break;
-            case 4:
+            case 5:
                 System.out.println("Playlist application closed.");
                 System.exit(0);
                 break;
