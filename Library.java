@@ -105,10 +105,10 @@ public class Library implements ILibrary {
         System.out.println("Please add the following details: " +
             "\n\t a. Song title" +
             "\n\t b. Song artist");
-        String songTitle = SCANNER.nextLine();
-        String songArtist = SCANNER.nextLine();
+        String songTitle = SCANNER.nextLine().trim();
+        String songArtist = SCANNER.nextLine().trim();
 
-        if(!songExists(songTitle)) {
+        if(!songExistsInLibrary(songTitle)) {
             this.song = new Song(songTitle, songArtist, getCurrentTime());
             this.getSongs().add(this.song);
             System.out.println("The song: '" + songTitle + "' by '" + songArtist + "' has been added successfully.");
@@ -129,10 +129,12 @@ public class Library implements ILibrary {
     @Override
     public void removeSongFromLibrary() {
         System.out.print("Please type in the song that you want to remove, using its title: ");
-        String songTitle = SCANNER.nextLine();
+        String songTitle = SCANNER.nextLine().trim();
         for(int i = 0; i < this.getSongs().size(); i++) {
-            if(this.songExists(songTitle)) {
-                this.getSongs().remove(this.getSong());
+            if(this.songExistsInLibrary(songTitle)) {
+                this.getSongs().remove(i);
+                System.out.println("Song has been removed from the library successfully.");
+                break;
             }
             else {
                 System.out.println("Error - song not found and therefore cannot be removed.");
@@ -143,12 +145,13 @@ public class Library implements ILibrary {
     /**
      * Print all stored songs in the library
      */
-    //@Override
+    @Override
     public void viewSongsInLibrary() {
         System.out.println("Songs in library:");
         for(int i = 0; i < this.getSongs().size(); i++) {
             String songTitle = this.getSongs().get(i).getTitle();
-            System.out.println(songTitle);
+            String songArtist = this.getSongs().get(i).getArtist();
+            System.out.println(songTitle + " - " + songArtist) ;
         }
     }
 
@@ -160,8 +163,8 @@ public class Library implements ILibrary {
         System.out.println("Please add the following details: " +
                 "\n\t a. Album title" +
                 "\n\t b. Album artist");
-        String albumTitle = SCANNER.nextLine();
-        String albumArtist = SCANNER.nextLine();
+        String albumTitle = SCANNER.nextLine().trim();
+        String albumArtist = SCANNER.nextLine().trim();
 
         if(!this.albumExists(albumTitle)) {
             this.album = new Album(albumTitle, albumArtist, getCurrentTime());
@@ -202,7 +205,7 @@ public class Library implements ILibrary {
      * @param songTitle The song to check, based on its title
      * @return The result
      */
-    boolean songExists(String songTitle) {
+    boolean songExistsInAlbum(String songTitle) {
         boolean songFound = false;
         for(int i = 0; i < this.getAlbum().getSongs().size(); i++) {
             if(songTitle.equalsIgnoreCase(this.getAlbum().getSongs().get(i).getTitle())) {
@@ -213,21 +216,41 @@ public class Library implements ILibrary {
     }
 
     /**
+     * Check if an independent song exists
+     * in the library.
+     *
+     * This does not include any songs
+     * that are stored in albums.
+     *
+     * @param songTitle The song to check, based on its title
+     * @return The result
+     */
+    boolean songExistsInLibrary(String songTitle) {
+        boolean songFound = false;
+        for(int i = 0; i < this.getSongs().size(); i++) {
+            if(songTitle.equalsIgnoreCase(this.getSongs().get(i).getTitle())) {
+                songFound = true;
+            }
+        }
+        return songFound;
+    }
+
+    /**
      * Enter the album details:
-     *  - album name
+     *  - album title
      *  - album artist
      *
      *  This method will be used whenever the
      *  user is required to either add or remove
-     *  songs from an album, ensuring that
+     *  songs from an album, assuming that
      *  the latter indeed exists.
      */
     private static String enterAlbumDetails() {
         System.out.println("Please enter the following album details: ");
         System.out.println("\t Album title: ");
         System.out.println("\t Album artist: ");
-        String albumTitle = SCANNER.nextLine();
-        String albumArtist = SCANNER.nextLine();
+        String albumTitle = SCANNER.nextLine().trim();
+        String albumArtist = SCANNER.nextLine().trim();
 
         if(!albumTitle.isEmpty() && !albumArtist.isEmpty()) {
             return albumTitle;
@@ -237,7 +260,7 @@ public class Library implements ILibrary {
 
     /**
      * Check if an album exists, but has
-     * not necessarily been added to the playlist
+     * not necessarily been added to the playlist.
      *
      * This method will also be used for whenever
      * the user wants to add or remove songs
@@ -263,9 +286,9 @@ public class Library implements ILibrary {
     public void addSongToAlbum() {
         System.out.println("Please add the following details: " +
                 "\n\t a. Song title");
-        String songTitle = SCANNER.nextLine();
+        String songTitle = SCANNER.nextLine().trim();
 
-        if(!songExists(songTitle)) {
+        if(!songExistsInAlbum(songTitle)) {
             for(int i = 0; i < this.getAlbums().size(); i++) {
                 this.song = new Song(songTitle, getCurrentTime());
             }
@@ -290,8 +313,8 @@ public class Library implements ILibrary {
     public void removeSongFromAlbum() {
         if(this.albumExists(enterAlbumDetails())) {
             System.out.print("Please type in the song that you want to remove, using its title: ");
-            String songTitle = SCANNER.next();
-            if(songExists(songTitle)) {
+            String songTitle = SCANNER.next().trim();
+            if(songExistsInAlbum(songTitle)) {
                 for(int i = 0; i < this.getAlbums().size(); i++) {
                     this.getAlbum().getSongs().remove(this.getSong());
                 }
