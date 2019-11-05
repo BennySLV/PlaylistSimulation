@@ -190,13 +190,11 @@ public class PlaylistMain {
             System.out.println("Please select from the following options: " +
                     "\n\t 1 - Play a song" +
                     "\n\t 2 - Stop a song" +
-                    "\n\t 3 - Repeat a song" +
-                    "\n\t 4 - Skip forwards (>|)" +
-                    "\n\t 5 - Skip backwards (|<)" +
-                    "\n\t 6 - Shuffle" +
-                    "\n\t 7 - Search for a song" +
-                    "\n\t 8 - Search for an album" +
-                    "\n\t 9 - Print the current playlist");
+                    "\n\t 3 - Skip forwards (>|)" +
+                    "\n\t 4 - Skip backwards (|<)" +
+                    "\n\t 5 - Search for a song" +
+                    "\n\t 6 - Search for an album" +
+                    "\n\t 7 - Print the current playlist");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
@@ -207,24 +205,18 @@ public class PlaylistMain {
                     this.getPlaylist().stop();
                     break;
                 case 3:
-                    this.getPlaylist().repeat();
-                    break;
-                case 4:
                     this.getPlaylist().skipForwards();
                     break;
-                case 5:
+                case 4:
                     this.getPlaylist().skipBackwards();
                     break;
-                case 6:
-                    this.getPlaylist().shuffle();
-                    break;
-                case 7:
+                case 5:
                     this.getPlaylist().searchForSong();
                     break;
-                case 8:
+                case 6:
                     this.getPlaylist().searchForAlbum();
                     break;
-                case 9:
+                case 7:
                     this.getPlaylist().showPlaylist();
                     break;
             }
