@@ -151,7 +151,8 @@ public class Library implements ILibrary {
         for(int i = 0; i < this.getSongs().size(); i++) {
             String songTitle = this.getSongs().get(i).getTitle();
             String songArtist = this.getSongs().get(i).getArtist();
-            System.out.println(songTitle + " - " + songArtist) ;
+            Timestamp timestamp = this.getSongs().get(i).getTimestamp();
+            System.out.println(songTitle + " - " + songArtist + "\n\t Date Added: " + timestamp) ;
         }
     }
 
@@ -349,7 +350,8 @@ public class Library implements ILibrary {
             for(int j = 0; j < this.getAlbum().getSongs().size(); j++) {
                 System.out.println(
                         this.getAlbums().get(i).getSongs().get(j).getTitle()
-                + " (" + this.getAlbums().get(i).getSongs().get(j).formatSongDuration(this.getSong().getDuration()) + ")");
+                + " (" + this.getAlbums().get(i).getSongs().get(j).formatSongDuration(
+                        this.getSong().getDuration()) + ")");
             }
         }
         System.out.println("**************************");
