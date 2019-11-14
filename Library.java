@@ -111,7 +111,7 @@ public class Library implements ILibrary {
         if(!songExistsInLibrary(songTitle)) {
             this.song = new Song(songTitle, songArtist, getCurrentTime());
             this.getSongs().add(this.song);
-            System.out.println("The song: '" + songTitle + "' by '" + songArtist + "' has been added successfully.");
+            System.out.println("The song: '" + songTitle + "' by '" + songArtist + "' has been added to the library successfully.");
         }
         else {
             System.out.println("Error - song already exists!");
@@ -130,15 +130,17 @@ public class Library implements ILibrary {
     public void removeSongFromLibrary() {
         System.out.print("Please type in the song that you want to remove, using its title: ");
         String songTitle = SCANNER.nextLine().trim();
-        for(int i = 0; i < this.getSongs().size(); i++) {
-            if(this.songExistsInLibrary(songTitle)) {
-                this.getSongs().remove(i);
-                System.out.println("Song has been removed from the library successfully.");
-                break;
+
+        if(this.songExistsInLibrary(songTitle)) {
+            for(int i = 0; i < this.getSongs().size(); i++) {
+                if(songTitle.equalsIgnoreCase(this.getSongs().get(i).getTitle())) {
+                    this.getSongs().remove(i);
+                    System.out.println("Song has been removed from the library successfully.");
+                }
             }
-            else {
-                System.out.println("Error - song not found and therefore cannot be removed.");
-            }
+        }
+        else {
+            System.out.println("Error - song not found and therefore cannot be removed.");
         }
     }
 
@@ -167,7 +169,7 @@ public class Library implements ILibrary {
         String albumTitle = SCANNER.nextLine().trim();
         String albumArtist = SCANNER.nextLine().trim();
 
-        if(!this.albumExists(albumTitle)) {
+        if(!this.albumExistsInLibrary(albumTitle)) {
             this.album = new Album(albumTitle, albumArtist, getCurrentTime());
             this.getAlbums().add(this.album);
             System.out.println("The album: '" + albumTitle + "' by '"
@@ -184,43 +186,26 @@ public class Library implements ILibrary {
     @Override
     public void removeAlbumFromLibrary() {
         System.out.print("Please type in the album that you want to remove, using its title: ");
-        String albumTitle = SCANNER.nextLine();
-        for(int i = 0; i < this.getAlbums().size(); i++) {
-            if(this.albumExists(albumTitle)) {
-                this.getAlbums().remove(this.getAlbum());
+        String albumTitle = SCANNER.nextLine().trim();
+
+        if(this.albumExistsInLibrary(albumTitle)) {
+            for(int i = 0; i < this.getAlbums().size(); i++) {
+                if(albumTitle.equalsIgnoreCase(this.getAlbums().get(i).getTitle())) {
+                    this.getAlbums().remove(i);
+                    System.out.println("Album has been removed from the library successfully.");
+                }
             }
-            else {
-                System.out.println("Error - album not found and therefore cannot be removed.");
-            }
+        }
+        else {
+            System.out.println("Error - album not found and therefore cannot be removed.");
         }
     }
 
     /**
-     * Check if a song exists
-     * in a given album.
-     *
-     * This method will be used
-     * as part of data validation throughout
-     * the program.
-     *
-     * @param songTitle The song to check, based on its title
-     * @return The result
-     */
-    boolean songExistsInAlbum(String songTitle) {
-        boolean songFound = false;
-        for(int i = 0; i < this.getAlbum().getSongs().size(); i++) {
-            if(songTitle.equalsIgnoreCase(this.getAlbum().getSongs().get(i).getTitle())) {
-                songFound = true;
-            }
-        }
-        return songFound;
-    }
-
-    /**
-     * Check if an independent song exists
+     * Check if an individual song exists
      * in the library.
      *
-     * This does not include any songs
+     * Note that this does not include any songs
      * that are stored in albums.
      *
      * @param songTitle The song to check, based on its title
@@ -229,8 +214,10 @@ public class Library implements ILibrary {
     boolean songExistsInLibrary(String songTitle) {
         boolean songFound = false;
         for(int i = 0; i < this.getSongs().size(); i++) {
-            if(songTitle.equalsIgnoreCase(this.getSongs().get(i).getTitle())) {
+            String songTitleInLibrary = this.getSongs().get(i).getTitle();
+            if(songTitle.equalsIgnoreCase(songTitleInLibrary)) {
                 songFound = true;
+                break;
             }
         }
         return songFound;
@@ -270,11 +257,12 @@ public class Library implements ILibrary {
      * @param albumTitle The album to check, based on its title
      * @return The result
      */
-    boolean albumExists(String albumTitle) {
+    boolean albumExistsInLibrary(String albumTitle) {
         boolean albumFound = false;
         for(int i = 0; i < this.getAlbums().size(); i++) {
             if(this.getAlbums().get(i).getTitle().equalsIgnoreCase(albumTitle)) {
                 albumFound = true;
+                break;
             }
         }
         return albumFound;
@@ -294,7 +282,7 @@ public class Library implements ILibrary {
                 this.song = new Song(songTitle, getCurrentTime());
             }
             enterAlbumDetails();
-            if(albumExists(this.getAlbum().getTitle())) {
+            if(albumExistsInLibrary(this.getAlbum().getTitle())) {
                 for(int i = 0; i < this.getAlbums().size(); i++) {
                     this.getAlbums().get(i).getSongs().add(this.song);
                     System.out.println("Song has been added successfully.");
@@ -312,16 +300,38 @@ public class Library implements ILibrary {
      */
     @Override
     public void removeSongFromAlbum() {
-        if(this.albumExists(enterAlbumDetails())) {
+        if(this.albumExistsInLibrary(enterAlbumDetails())) {
             System.out.print("Please type in the song that you want to remove, using its title: ");
-            String songTitle = SCANNER.next().trim();
+            String songTitle = SCANNER.nextLine().trim();
             if(songExistsInAlbum(songTitle)) {
                 for(int i = 0; i < this.getAlbums().size(); i++) {
-                    this.getAlbum().getSongs().remove(this.getSong());
+                    this.getAlbum().getSongs().remove(this.getSongs().get(i));
                 }
             }
         }
     }
+
+    /**
+     * Check if a song exists
+     * in a given album.
+     *
+     * This method will be used
+     * as part of data validation throughout
+     * the program.
+     *
+     * @param songTitle The song to check, based on its title
+     * @return The result
+     */
+    private boolean songExistsInAlbum(String songTitle) {
+        boolean songFound = false;
+        for(int i = 0; i < this.getAlbum().getSongs().size(); i++) {
+            if(songTitle.equalsIgnoreCase(this.getAlbum().getSongs().get(i).getTitle())) {
+                songFound = true;
+            }
+        }
+        return songFound;
+    }
+
 
     /**
      * Print all stored albums
