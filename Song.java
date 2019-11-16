@@ -24,37 +24,39 @@ public class Song {
      *
      * This constructor will be used
      * for when a song is to be created
-     * and added directly to the playlist.
-     *
-     * The duration for a song will be selected at random.
-     * With range between 60 and 1200 seconds:
-     *  - (i.e. 1 - 20 minutes)
-     *
-     * @param title The title of the song
-     * @param timestamp The current timestamp when the song is added to the playlist
-     */
-    Song(String title, Timestamp timestamp) {
-        this.title = title;
-        this.timestamp = timestamp;
-        setDuration((int)(Math.random() * ((1200 - 60) + 1)) + 60);
-    }
-
-    /**
-     * Constructor II
-     *
-     * This constructor will be used to add
-     * songs to an album only.
+     * and added to an album.
      *
      * This means that no artist name is required,
      * as this has already been defined when
      * the album was created previously.
      *
      * @param title The title of the song
+     * @param duration The duration of the song
+     * @param timestamp The current timestamp when the song is added to the playlist
+     */
+    Song(String title, int duration, Timestamp timestamp) {
+        this.title = title;
+        this.duration = duration;
+        this.timestamp = timestamp;
+    }
+
+    /**
+     * Constructor II
+     *
+     * This constructor will be used to add
+     * songs directly to the playlist.
+     *
+     * In this case, the artist details
+     * need to be added to ensure clarity
+     * for all songs stored in the playlist.
+     *
+     * @param title The title of the song
      * @param artist The artist of the song
      * @param timestamp The current timestamp when the song is added to an album
      */
-    Song(String title, String artist, Timestamp timestamp) {
+    Song(String title, int duration, String artist, Timestamp timestamp) {
         this.title = title;
+        this.duration = duration;
         this.artist = artist;
         this.timestamp = timestamp;
     }
@@ -85,21 +87,6 @@ public class Song {
      */
     int getDuration() {
         return duration;
-    }
-
-    /**
-     * Set the duration for a
-     * given song.
-     *
-     * Each duration for a song
-     * will for now be given a random
-     * integer.
-     *
-     * @param duration The new duration
-     */
-    private void setDuration(int duration) {
-        this.duration = duration;
-        formatSongDuration(duration);
     }
 
     /**
