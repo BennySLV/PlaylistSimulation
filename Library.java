@@ -103,13 +103,16 @@ public class Library implements ILibrary {
     @Override
     public void addSongToLibrary() {
         System.out.println("Please add the following details: " +
-            "\n\t a. Song title" +
-            "\n\t b. Song artist");
+                "\n\t a. Song duration (in seconds)" +
+                "\n\t b. Song title" +
+                "\n\t c. Song artist");
+        int songDuration = SCANNER.nextInt();
+        SCANNER.nextLine(); // Eliminates the "\n" returned before the next nextLine() method call
         String songTitle = SCANNER.nextLine().trim();
         String songArtist = SCANNER.nextLine().trim();
 
         if(!songExistsInLibrary(songTitle)) {
-            this.song = new Song(songTitle, songArtist, getCurrentTime());
+            this.song = new Song(songTitle, songDuration, songArtist, getCurrentTime());
             this.getSongs().add(this.song);
             System.out.println("The song: '" + songTitle + "' by '" + songArtist + "' has been added to the library successfully.");
         }
@@ -153,8 +156,11 @@ public class Library implements ILibrary {
         for(int i = 0; i < this.getSongs().size(); i++) {
             String songTitle = this.getSongs().get(i).getTitle();
             String songArtist = this.getSongs().get(i).getArtist();
+            String duration = this.getSongs().get(i).formatSongDuration(this.getSongs().get(i).getDuration());
             Timestamp timestamp = this.getSongs().get(i).getTimestamp();
-            System.out.println(songTitle + " - " + songArtist + "\n\t Date Added: " + timestamp) ;
+            System.out.println(songTitle + "\n\t Artist: " + songArtist +
+                    "\n\t Duration: "  + duration +
+                    "\n\t Date Added: " + timestamp) ;
         }
     }
 
@@ -274,12 +280,15 @@ public class Library implements ILibrary {
     @Override
     public void addSongToAlbum() {
         System.out.println("Please add the following details: " +
-                "\n\t a. Song title");
+                "\n\t a. Song duration" +
+                "\n\t b. Song title");
+        int songDuration = SCANNER.nextInt();
+        SCANNER.nextLine(); // Eliminates the "\n" returned before the next nextLine() method call
         String songTitle = SCANNER.nextLine().trim();
 
         if(!songExistsInAlbum(songTitle)) {
             for(int i = 0; i < this.getAlbums().size(); i++) {
-                this.song = new Song(songTitle, getCurrentTime());
+                this.song = new Song(songTitle, songDuration, getCurrentTime());
             }
             enterAlbumDetails();
             if(albumExistsInLibrary(this.getAlbum().getTitle())) {
