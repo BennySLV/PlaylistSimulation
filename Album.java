@@ -36,6 +36,7 @@ public class Album {
     Album(String title, String artist, Timestamp timestamp) {
         this.title = title;
         this.artist = artist;
+        this.duration = 0;
         this.timestamp = timestamp;
         this.songs = new ArrayList<>();
     }
