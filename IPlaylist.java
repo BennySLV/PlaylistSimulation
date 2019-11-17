@@ -16,15 +16,29 @@ public interface IPlaylist {
      * Add an individual song to the playlist
      *
      * This methods gives the user the option
-     * to add specific songs from the album
-     * rather than the entire album.
+     * to either add specific songs from an album
+     * or directly from the library.
      */
     void addSongToPlaylist();
+
+    /**
+     * Add all songs to the playlist at
+     * once.
+     *
+     * These songs can be either from an album
+     * or stored independently in the library.
+     */
+    void addAllSongsToPlaylist();
 
     /**
      * Remove an individual song from the playlist
      */
     void removeSongFromPlaylist();
+
+    /**
+     * Remove all songs from the playlist.
+     */
+    void removeAllSongsFromPlaylist();
 
     /**
      * Add an entire stored album
