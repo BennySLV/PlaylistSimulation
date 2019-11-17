@@ -22,23 +22,9 @@ public interface IPlaylist {
     void addSongToPlaylist();
 
     /**
-     * Add all songs to the playlist at
-     * once.
-     *
-     * These songs can be either from an album
-     * or stored independently in the library.
-     */
-    void addAllSongsToPlaylist();
-
-    /**
      * Remove an individual song from the playlist
      */
     void removeSongFromPlaylist();
-
-    /**
-     * Remove all songs from the playlist.
-     */
-    void removeAllSongsFromPlaylist();
 
     /**
      * Add an entire stored album
