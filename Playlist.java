@@ -140,6 +140,31 @@ public class Playlist implements IPlaylist {
     }
 
     /**
+     * Add a given song to the playlist
+     * in chronological order, using the date and timestamp
+     * to which it was added. Also check the result
+     * of this process.
+     *
+     * @param song The new song to add
+     */
+    private void addInChronologicalOrder(Song song) {
+        LinkedList<Song> songs = this.getStoredSongs();
+        ListIterator<Song> songListIterator = songs.listIterator();
+        while(songListIterator.hasNext()) {
+            int comparison = this.getSong().getTimestamp().compareTo(songListIterator.next().getTimestamp());
+            if(comparison == 0) {
+                System.out.println("Error - song has already been added!");
+            }
+            else if(comparison > 0) {
+                songListIterator.previous();
+                songListIterator.add(song);
+            }
+        }
+        songListIterator.next();
+        songListIterator.add(this.song);
+    }
+
+    /**
      * Add an individual song to the playlist
      *
      * This methods gives the user the option
@@ -300,6 +325,15 @@ public class Playlist implements IPlaylist {
         if(!isPlaying()) {
             if(songIsInPlaylist(enterSongTitle())) {
                 System.out.println("Now playing: " + "\n\t Song: " + this.getSong().getTitle());
+                System.out.println("Press 1 to Skip forwards (>|)");
+                System.out.println("Press 2 to Skip backwards (|<)");
+                byte selection = SCANNER.nextByte();
+                if(selection == 1) {
+                    skipForwards();
+                }
+                else if(selection == 2) {
+                    skipBackwards();
+                }
             }
             else {
                 System.out.println("Error - song not in playlist.");
@@ -435,8 +469,7 @@ public class Playlist implements IPlaylist {
         System.out.println("Songs currently in playlist: ");
         System.out.println("************************");
         while(songIterator.hasNext()) {
-            System.out.println("Title: " + songIterator.next().getTitle() +
-                    " (" + songIterator.next().getDuration() + ")");
+            System.out.println("Title: " + songIterator.next().getTitle());
         }
         System.out.println("************************");
     }
