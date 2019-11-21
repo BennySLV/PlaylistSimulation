@@ -192,7 +192,8 @@ public class PlaylistMain {
                     "\n\t 2 - Stop a song" +
                     "\n\t 3 - Search for a song" +
                     "\n\t 4 - Search for an album" +
-                    "\n\t 5 - Print the current playlist");
+                    "\n\t 5 - Print the current playlist of songs" +
+                    "\n\t 6 - Print the current playlist of albums");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
@@ -209,7 +210,10 @@ public class PlaylistMain {
                     this.getPlaylist().searchForAlbum();
                     break;
                 case 5:
-                    this.getPlaylist().showPlaylist();
+                    this.getPlaylist().showPlaylistOfSongs();
+                    break;
+                case 6:
+                    this.getPlaylist().showPlaylistOfAlbums();
                     break;
             }
             if(!continueSection()) {
