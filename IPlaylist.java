@@ -12,6 +12,37 @@ package Section6.LinkedListChallenge;
  * @author Ben Silveston
  */
 public interface IPlaylist {
+
+    /**
+     * Add all new songs to the playlist
+     * in (descending) chronological order.
+     *
+     * Ensuring that the most recently added
+     * song therefore appears at the top of the
+     * list.
+     *
+     * If there is no suitable place to add the new
+     * song then add it at the end of the list.
+     *
+     * @param song The song to be added to the playlist
+     */
+    boolean addInChronologicalOrder(Song song);
+
+    /**
+     * Add all new albums to the playlist
+     * in (descending) chronological order.
+     *
+     * Ensuring that the most recently added
+     * album therefore appears at the top of the
+     * list.
+     *
+     * If there is no suitable place to add the new
+     * album then add it at the end of the list.
+     *
+     * @param album The song to be added to the playlist
+     */
+    boolean addInChronologicalOrder(Album album);
+
     /**
      * Add an individual song to the playlist
      *
@@ -95,8 +126,14 @@ public interface IPlaylist {
     void searchForAlbum();
 
     /**
-     * Print the playlist
-     * of songs.
+     * Print the playlist containing
+     * all stored songs.
      */
-    void showPlaylist();
+    void showPlaylistOfSongs();
+
+    /**
+     * Print the playlist containing
+     * all stored albums.
+     */
+    void showPlaylistOfAlbums();
 }
