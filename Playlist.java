@@ -1,8 +1,10 @@
 package Section6.LinkedListChallenge;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -25,8 +27,8 @@ public class Playlist implements IPlaylist {
     private Song song;
     private Album album;
     private Library library;
-    private LinkedList<Album> storedAlbums;
     private LinkedList<Song> storedSongs;
+    private LinkedList<Album> storedAlbums;
     private static final Scanner SCANNER = new Scanner(System.in);
 
     /**
@@ -140,28 +142,41 @@ public class Playlist implements IPlaylist {
     }
 
     /**
-     * Add a given song to the playlist
-     * in chronological order, using the date and timestamp
-     * to which it was added. Also check the result
-     * of this process.
+     * Add all new songs to the playlist
+     * in (descending) chronological order.
      *
-     * @param song The new song to add
+     * Ensuring that the most recently added
+     * song therefore appears at the top of the
+     * list.
+     *
+     * If there is no suitable place to add the new
+     * song then add it at the end of the list.
+     *
+     * @param song The song to be added to the playlist
      */
-    private void addInChronologicalOrder(Song song) {
-        LinkedList<Song> songs = this.getStoredSongs();
-        ListIterator<Song> songListIterator = songs.listIterator();
+    private boolean addInChronologicalOrder(Song song) {
+        ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
         while(songListIterator.hasNext()) {
-            int comparison = this.getSong().getTimestamp().compareTo(songListIterator.next().getTimestamp());
+            int comparison = songListIterator.next().getTimestamp().compareTo(timestamp);
             if(comparison == 0) {
-                System.out.println("Error - song has already been added!");
+                System.out.println("Error - song has already been added to the playlist.");
+                return false;
             }
             else if(comparison > 0) {
+                songListIterator.next();
+                songListIterator.add(song);
+                return true;
+            }
+            else {
                 songListIterator.previous();
                 songListIterator.add(song);
+                return true;
             }
         }
-        songListIterator.next();
-        songListIterator.add(this.song);
+        songListIterator.add(song);
+        return true;
     }
 
     /**
@@ -185,7 +200,7 @@ public class Playlist implements IPlaylist {
         if(this.getLibrary().songExistsInLibrary(songTitle)) {
             if(!songIsInPlaylist(songTitle)) {
                 this.song = new Song(songTitle, songDuration, songArtist, this.getLibrary().getCurrentTime());
-                this.getStoredSongs().add(this.song);
+                this.addInChronologicalOrder(this.song);
                 if(this.getStoredSongs().contains(this.song)) {
                     System.out.println("Song has been added to the playlist successfully.");
                 }
@@ -234,9 +249,9 @@ public class Playlist implements IPlaylist {
      * @return The result
      */
     private boolean songIsInPlaylist(String songTitle) {
+        ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
         boolean songInPlaylist = false;
         if(!this.getStoredSongs().isEmpty()) {
-            ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
             while(songListIterator.hasNext()) {
                 if(songListIterator.next().getTitle().equalsIgnoreCase(songTitle)) {
                     songInPlaylist = true;
@@ -304,11 +319,11 @@ public class Playlist implements IPlaylist {
      * @return The result
      */
     private boolean albumIsInPlaylist(String albumTitle) {
+        ListIterator<Album> albumListIterator = this.getStoredAlbums().listIterator();
         boolean albumInPlaylist = false;
         if(!this.getStoredAlbums().isEmpty()) {
-            Iterator<Album> albumIterator = this.getStoredAlbums().iterator();
-            while(albumIterator.hasNext()) {
-                if(albumIterator.next().getTitle().equalsIgnoreCase(albumTitle)) {
+            while(albumListIterator.hasNext()) {
+                if(albumListIterator.next().getTitle().equalsIgnoreCase(albumTitle)) {
                     albumInPlaylist = true;
                 }
             }
@@ -322,17 +337,18 @@ public class Playlist implements IPlaylist {
      */
     @Override
     public void play() {
+        ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
         if(!isPlaying()) {
             if(songIsInPlaylist(enterSongTitle())) {
                 System.out.println("Now playing: " + "\n\t Song: " + this.getSong().getTitle());
-                System.out.println("Press 1 to Skip forwards (>|)");
-                System.out.println("Press 2 to Skip backwards (|<)");
+                System.out.println("Press 1 to stop");
+                System.out.println("Press 2 to Skip forwards (>|)");
+                System.out.println("Press 3 to Skip backwards (|<)");
                 byte selection = SCANNER.nextByte();
-                if(selection == 1) {
-                    skipForwards();
-                }
-                else if(selection == 2) {
-                    skipBackwards();
+                switch(selection) {
+                    case 1:
+                        System.out.println("Stopped: " + "\n\t Song: " + songListIterator.next().getTitle());
+                        break;
                 }
             }
             else {
@@ -353,7 +369,17 @@ public class Playlist implements IPlaylist {
         if(isPlaying()) {
             Iterator<Song> songIterator = this.getStoredSongs().iterator();
             while(songIterator.hasNext()) {
-                System.out.println("Stopped: " + "\n\t Song: " + songIterator.next().getTitle());
+                System.out.println("Press 1 to Skip forwards (>|)");
+                System.out.println("Press 2 to Skip backwards (|<)");
+                byte selection = SCANNER.nextByte();
+                switch(selection) {
+                    case 1:
+                        skipForwards();
+                        break;
+                    case 2:
+                        skipBackwards();
+                        break;
+                }
             }
         }
         else {
@@ -429,11 +455,13 @@ public class Playlist implements IPlaylist {
      */
     @Override
     public void searchForSong() {
-        Iterator<Song> songIterator = this.getStoredSongs().iterator();
-        while(songIterator.hasNext()) {
-            String songTitle = songIterator.next().getTitle();
+        ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
+        while(songListIterator.hasNext()) {
+            String songTitle = songListIterator.next().getTitle();
+            Timestamp timestamp = songListIterator.next().getTimestamp();
             if(enterSongTitle().equalsIgnoreCase(songTitle)) {
                 System.out.println("\t Song title: " + songTitle);
+                System.out.println("\t Date added: " + timestamp);
             }
             else {
                 System.out.println("Error - song not found.");
@@ -447,9 +475,9 @@ public class Playlist implements IPlaylist {
      */
     @Override
     public void searchForAlbum() {
-        Iterator<Album> albumIterator = this.getStoredAlbums().iterator();
-        while(albumIterator.hasNext()) {
-            String albumTitle = albumIterator.next().getTitle();
+        ListIterator<Album> albumListIterator = this.getStoredAlbums().listIterator();
+        while(albumListIterator.hasNext()) {
+            String albumTitle = albumListIterator.next().getTitle();
             if(enterAlbumTitle().equalsIgnoreCase(albumTitle)) {
                 System.out.println("Album title: " + albumTitle);
             }
@@ -465,11 +493,12 @@ public class Playlist implements IPlaylist {
      */
     @Override
     public void showPlaylist() {
-        Iterator<Song> songIterator = this.getStoredSongs().iterator();
+        ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
         System.out.println("Songs currently in playlist: ");
         System.out.println("************************");
-        while(songIterator.hasNext()) {
-            System.out.println("Title: " + songIterator.next().getTitle());
+        while(songListIterator.hasNext()) {
+            System.out.println("Title: " + songListIterator.next().getTitle());
+            //System.out.println("Date added: " + songListIterator.next().getTimestamp());
         }
         System.out.println("************************");
     }
