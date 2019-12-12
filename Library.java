@@ -114,7 +114,10 @@ public class Library implements ILibrary {
         if(!songExistsInLibrary(songTitle)) {
             this.song = new Song(songTitle, songDuration, songArtist, getCurrentTime());
             this.getSongs().add(this.song);
-            System.out.println("The song: '" + songTitle + "' by '" + songArtist + "' has been added to the library successfully.");
+            if(this.getSongs().contains(this.getSong())) {
+                System.out.println("The song: '" + songTitle + "' by '" + songArtist +
+                        "' has been added to the library successfully.");
+            }
         }
         else {
             System.out.println("Error - song already exists!");
@@ -178,11 +181,16 @@ public class Library implements ILibrary {
         if(!this.albumExistsInLibrary(albumTitle)) {
             this.album = new Album(albumTitle, albumArtist, getCurrentTime());
             this.getAlbums().add(this.album);
-            System.out.println("The album: '" + albumTitle + "' by '"
-                    + albumArtist + "' has been added successfully.");
+            if(this.getAlbums().contains(this.album)) {
+                System.out.println("The album: '" + albumTitle + "' by '"
+                        + albumArtist + "' has been added successfully.");
+            }
+            else {
+                System.out.println("Error - album could not be added.");
+            }
         }
         else {
-            System.out.println("Error - album already exists!");
+            System.out.println("Error - album already exists.");
         }
     }
 
@@ -268,7 +276,7 @@ public class Library implements ILibrary {
         for(int i = 0; i < this.getAlbums().size(); i++) {
             if(this.getAlbums().get(i).getTitle().equalsIgnoreCase(albumTitle)) {
                 albumFound = true;
-                break;
+                //break;
             }
         }
         return albumFound;
@@ -280,26 +288,29 @@ public class Library implements ILibrary {
     @Override
     public void addSongToAlbum() {
         System.out.println("Please add the following details: " +
-                "\n\t a. Song duration" +
+                "\n\t a. Song duration (in seconds)" +
                 "\n\t b. Song title");
         int songDuration = SCANNER.nextInt();
         SCANNER.nextLine(); // Eliminates the "\n" returned before the next nextLine() method call
         String songTitle = SCANNER.nextLine().trim();
 
         if(!songExistsInAlbum(songTitle)) {
-            for(int i = 0; i < this.getAlbums().size(); i++) {
-                this.song = new Song(songTitle, songDuration, getCurrentTime());
-            }
-            enterAlbumDetails();
-            if(albumExistsInLibrary(this.getAlbum().getTitle())) {
-                for(int i = 0; i < this.getAlbums().size(); i++) {
-                    this.getAlbums().get(i).getSongs().add(this.song);
-                    System.out.println("Song has been added successfully.");
+            this.song = new Song(songTitle, songDuration, getCurrentTime());
+            if(albumExistsInLibrary(enterAlbumDetails())) {
+                this.getAlbum().getSongs().add(this.song);
+                if(this.getAlbum().getSongs().contains(this.song)) {
+                    System.out.println("Song has been added successfully to the album.");
                 }
+                else {
+                    System.out.println("Error - song could not be added to the album.");
+                }
+            }
+            else {
+                System.out.println("Error - album already exists.");
             }
         }
         else {
-            System.out.println("Error - song already exists!");
+            System.out.println("Error - song already exists.");
         }
     }
 
@@ -309,7 +320,7 @@ public class Library implements ILibrary {
      */
     @Override
     public void removeSongFromAlbum() {
-        if(this.albumExistsInLibrary(enterAlbumDetails())) {
+        if(albumExistsInLibrary(enterAlbumDetails())) {
             System.out.print("Please type in the song that you want to remove, using its title: ");
             String songTitle = SCANNER.nextLine().trim();
             if(songExistsInAlbum(songTitle)) {
@@ -336,11 +347,11 @@ public class Library implements ILibrary {
         for(int i = 0; i < this.getAlbum().getSongs().size(); i++) {
             if(songTitle.equalsIgnoreCase(this.getAlbum().getSongs().get(i).getTitle())) {
                 songFound = true;
+                break;
             }
         }
         return songFound;
     }
-
 
     /**
      * Print all stored albums
@@ -351,7 +362,9 @@ public class Library implements ILibrary {
         System.out.println("Albums in library:");
         System.out.println("**************************");
         for(int i = 0; i < this.getAlbums().size(); i++) {
-            System.out.println(this.getAlbums().get(i).getTitle());
+            System.out.println(this.getAlbums().get(i).getTitle() +
+                    " (" + this.getAlbums().get(i).formatAlbumDuration(
+                            this.getAlbums().get(i).calculateAlbumDuration()) + ")");
         }
         System.out.println("**************************");
     }
@@ -362,17 +375,13 @@ public class Library implements ILibrary {
      */
     @Override
     public void viewSongsInAlbum() {
-        enterAlbumDetails();
-        System.out.println("Songs in album:");
-        System.out.println("**************************");
-        for(int i = 0; i < this.getAlbums().size(); i++) {
-            for(int j = 0; j < this.getAlbum().getSongs().size(); j++) {
-                System.out.println(
-                        this.getAlbums().get(i).getSongs().get(j).getTitle()
-                + " (" + this.getAlbums().get(i).getSongs().get(j).formatSongDuration(
-                        this.getSong().getDuration()) + ")");
+        if(albumExistsInLibrary(enterAlbumDetails())) {
+            System.out.println("Songs in album:");
+            System.out.println("**************************");
+            for(int i = 0; i < this.getAlbum().getSongs().size(); i++) {
+                System.out.println(this.getAlbum().getSongs().get(i).getTitle());
             }
+            System.out.println("**************************");
         }
-        System.out.println("**************************");
     }
 }
