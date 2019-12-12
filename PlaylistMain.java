@@ -70,7 +70,8 @@ public class PlaylistMain {
             System.out.println("Please select from the following options: " +
                     "\n\t 1 - Create a new song and add it to the library" +
                     "\n\t 2 - Delete an existing song" +
-                    "\n\t 3 - View all stored songs in the library");
+                    "\n\t 3 - View all stored songs in the library" +
+                    "\n\t 4 - Back to main menu");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
@@ -82,6 +83,9 @@ public class PlaylistMain {
                     break;
                 case 3:
                     this.getPlaylist().getLibrary().viewSongsInLibrary();
+                    break;
+                case 4:
+                    runApplication();
                     break;
             }
             if(!continueSection()) {
@@ -110,7 +114,8 @@ public class PlaylistMain {
                     "\n\t 3 - Add song to an existing album" +
                     "\n\t 4 - Remove song from an album" +
                     "\n\t 5 - View all stored albums in the library" +
-                    "\n\t 6 - View all stored songs in a particular album");
+                    "\n\t 6 - View all stored songs in a particular album" +
+                    "\n\t 7 - Back to main menu");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
@@ -131,6 +136,9 @@ public class PlaylistMain {
                     break;
                 case 6:
                     this.getPlaylist().getLibrary().viewSongsInAlbum();
+                    break;
+                case 7:
+                    runApplication();
                     break;
             }
             if(!continueSection()) {
@@ -153,7 +161,8 @@ public class PlaylistMain {
                     "\n\t 1 - Add a new song to the playlist" +
                     "\n\t 2 - Remove an existing song from the playlist" +
                     "\n\t 3 - Add a new album to the playlist" +
-                    "\n\t 4 - Remove an existing album from the playlist");
+                    "\n\t 4 - Remove an existing album from the playlist" +
+                    "\n\t 5 - Back to main menu");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
@@ -168,6 +177,9 @@ public class PlaylistMain {
                     break;
                 case 4:
                     this.getPlaylist().removeAlbumFromPlaylist();
+                    break;
+                case 5:
+                    runApplication();
                     break;
             }
             if(!continueSection()) {
@@ -193,7 +205,8 @@ public class PlaylistMain {
                     "\n\t 3 - Search for a song" +
                     "\n\t 4 - Search for an album" +
                     "\n\t 5 - Print the current playlist of songs" +
-                    "\n\t 6 - Print the current playlist of albums");
+                    "\n\t 6 - Print the current playlist of albums" +
+                    "\n\t 7 - Back to main menu");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
@@ -214,6 +227,9 @@ public class PlaylistMain {
                     break;
                 case 6:
                     this.getPlaylist().showPlaylistOfAlbums();
+                    break;
+                case 7:
+                    runApplication();
                     break;
             }
             if(!continueSection()) {
@@ -238,6 +254,7 @@ public class PlaylistMain {
         switch(menuSelection) {
             case 1:
                 songSection();
+                break;
             case 2:
                 albumSection();
                 break;
@@ -251,8 +268,6 @@ public class PlaylistMain {
                 System.out.println("Playlist application closed.");
                 System.exit(0);
                 break;
-                default:
-                    playlistSection();
         }
     }
 
