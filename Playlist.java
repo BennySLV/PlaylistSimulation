@@ -403,7 +403,7 @@ public class Playlist implements IPlaylist {
             }
         }
         else {
-            System.out.println("Error - song not currently playing.");
+            System.out.println("Error - song does not exist.");
         }
     }
 
