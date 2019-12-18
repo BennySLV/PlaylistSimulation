@@ -101,19 +101,6 @@ public interface IPlaylist {
     void skipBackwards();
 
     /**
-     * Check to see if the particular
-     * song in the playlist is currently playing.
-     *
-     * This method will determine
-     * the implementation for other relevant playlist
-     * methods (i.e. stopping, repeating or
-     * skipping forwards/backwards between songs).
-     *
-     * @return The result
-     */
-    boolean isPlaying();
-
-    /**
      * Search for a given song
      * in the playlist
      */

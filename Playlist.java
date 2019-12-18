@@ -382,21 +382,27 @@ public class Playlist implements IPlaylist {
     @Override
     public void play() {
         ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
-        if(!isPlaying()) {
-            if(songIsInPlaylist(enterSongTitle())) {
-                System.out.println("Now playing: " + "\n\t Song: " + this.getSong().getTitle());
+        if(songIsInPlaylist(enterSongTitle())) {
+            System.out.println("Now playing: " + "\n\t Song: " + songListIterator.next().getTitle());
+            boolean hasNotSelected = true;
+            while(hasNotSelected) {
                 System.out.println("Press 1 to stop");
                 System.out.println("Press 2 to Skip forwards (>|)");
                 System.out.println("Press 3 to Skip backwards (|<)");
+
                 byte selection = SCANNER.nextByte();
                 switch(selection) {
                     case 1:
-                        System.out.println("Stopped: " + "\n\t Song: " + songListIterator.next().getTitle());
+                        stop();
+                        hasNotSelected = false;
+                        break;
+                    case 2:
+                        skipForwards();
+                        break;
+                    case 3:
+                        skipBackwards();
                         break;
                 }
-            }
-            else {
-                System.out.println("Error - song not in playlist.");
             }
         }
         else {
@@ -410,24 +416,20 @@ public class Playlist implements IPlaylist {
      */
     @Override
     public void stop() {
-        if(isPlaying()) {
-            Iterator<Song> songIterator = this.getStoredSongs().iterator();
-            while(songIterator.hasNext()) {
-                System.out.println("Press 1 to Skip forwards (>|)");
-                System.out.println("Press 2 to Skip backwards (|<)");
-                byte selection = SCANNER.nextByte();
-                switch(selection) {
-                    case 1:
-                        skipForwards();
-                        break;
-                    case 2:
-                        skipBackwards();
-                        break;
-                }
+        Iterator<Song> songIterator = this.getStoredSongs().iterator();
+        while(songIterator.hasNext()) {
+            System.out.println("Song has been stopped...");
+            System.out.println("Press 1 to Skip forwards (>|)");
+            System.out.println("Press 2 to Skip backwards (|<)");
+            byte selection = SCANNER.nextByte();
+            switch(selection) {
+                case 1:
+                    skipForwards();
+                    break;
+                case 2:
+                    skipBackwards();
+                    break;
             }
-        }
-        else {
-            System.out.println("Error - song not currently playing.");
         }
     }
 
@@ -438,11 +440,14 @@ public class Playlist implements IPlaylist {
     @Override
     public void skipForwards() {
         ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
-        if(songListIterator.hasNext()) {
-            System.out.println("Now playing: " + songListIterator.next().getTitle());
-        }
-        else {
-            System.out.println("Reached the end of the playlist...");
+        while(songListIterator.hasNext()) {
+            if(songListIterator.hasNext()) {
+                songListIterator.next();
+                System.out.println("Now playing: " + songListIterator.next().getTitle());
+            }
+            else {
+                System.out.println("Reached the end of the playlist...");
+            }
         }
     }
 
@@ -453,44 +458,15 @@ public class Playlist implements IPlaylist {
     @Override
     public void skipBackwards() {
         ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
-        if(songListIterator.hasPrevious()) {
-            System.out.println("Now playing: " + songListIterator.previous().getTitle());
-        }
-        else {
-            System.out.println("Reached the start of the playlist...");
-        }
-    }
-
-    /**
-     * Check to see if the particular
-     * song in the playlist is currently playing.
-     *
-     * This method will determine
-     * the implementation for other relevant playlist
-     * methods (i.e. stopping, repeating or
-     * skipping forwards/backwards between songs).
-     *
-     * @return The result
-     */
-    @Override
-    public boolean isPlaying() {
-        boolean songIsPlaying = false;
-        StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
-        for(int i = 0; i < stackTraceElement.length; i++) {
-            String playlistMethodRunning = stackTraceElement[i].getMethodName();
-            switch(playlistMethodRunning) {
-                case "stop":
-                case "repeat":
-                case "skipForwards":
-                case "skipBackwards":
-                    songIsPlaying = true;
-                    break;
-                case "play":
-                    songIsPlaying = false;
-                    break;
+        while(songListIterator.hasPrevious()) {
+            if(songListIterator.hasPrevious()) {
+                songListIterator.previous();
+                System.out.println("Now playing: " + songListIterator.previous().getTitle());
+            }
+            else {
+                System.out.println("Reached the start of the playlist...");
             }
         }
-        return songIsPlaying;
     }
 
     /**
@@ -499,10 +475,10 @@ public class Playlist implements IPlaylist {
      */
     @Override
     public void searchForSong() {
-        ListIterator<Song> songListIterator = this.getStoredSongs().listIterator();
-        while(songListIterator.hasNext()) {
-            String songTitle = songListIterator.next().getTitle();
-            Timestamp timestamp = songListIterator.next().getTimestamp();
+        Iterator<Song> songIterator = this.getStoredSongs().iterator();
+        String songTitle = songIterator.next().getTitle();
+        Timestamp timestamp = songIterator.next().getTimestamp();
+        while(songIterator.hasNext()) {
             if(enterSongTitle().equalsIgnoreCase(songTitle)) {
                 System.out.println("\t Song title: " + songTitle);
                 System.out.println("\t Date added: " + timestamp);
