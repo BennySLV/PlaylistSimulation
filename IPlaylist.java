@@ -83,12 +83,6 @@ public interface IPlaylist {
     void play();
 
     /**
-     * Stop the current song that
-     * is being played
-     */
-    void stop();
-
-    /**
      * Skip to the next song
      * in the playlist
      */

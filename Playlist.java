@@ -386,50 +386,24 @@ public class Playlist implements IPlaylist {
             System.out.println("Now playing: " + "\n\t Song: " + songListIterator.next().getTitle());
             boolean hasNotSelected = true;
             while(hasNotSelected) {
-                System.out.println("Press 1 to stop");
-                System.out.println("Press 2 to Skip forwards (>|)");
-                System.out.println("Press 3 to Skip backwards (|<)");
+                System.out.println("Press 1 to Skip forwards (>|)");
+                System.out.println("Press 2 to Skip backwards (|<)");
 
                 byte selection = SCANNER.nextByte();
                 switch(selection) {
                     case 1:
-                        stop();
+                        skipForwards();
                         hasNotSelected = false;
                         break;
                     case 2:
-                        skipForwards();
-                        break;
-                    case 3:
                         skipBackwards();
+                        hasNotSelected = false;
                         break;
                 }
             }
         }
         else {
             System.out.println("Error - song not currently playing.");
-        }
-    }
-
-    /**
-     * Stop the current song that
-     * is being played
-     */
-    @Override
-    public void stop() {
-        Iterator<Song> songIterator = this.getStoredSongs().iterator();
-        while(songIterator.hasNext()) {
-            System.out.println("Song has been stopped...");
-            System.out.println("Press 1 to Skip forwards (>|)");
-            System.out.println("Press 2 to Skip backwards (|<)");
-            byte selection = SCANNER.nextByte();
-            switch(selection) {
-                case 1:
-                    skipForwards();
-                    break;
-                case 2:
-                    skipBackwards();
-                    break;
-            }
         }
     }
 
