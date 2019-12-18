@@ -201,12 +201,11 @@ public class PlaylistMain {
         while(sectionRunning) {
             System.out.println("Please select from the following options: " +
                     "\n\t 1 - Play a song" +
-                    "\n\t 2 - Stop a song" +
-                    "\n\t 3 - Search for a song" +
-                    "\n\t 4 - Search for an album" +
-                    "\n\t 5 - Print the current playlist of songs" +
-                    "\n\t 6 - Print the current playlist of albums" +
-                    "\n\t 7 - Back to main menu");
+                    "\n\t 2 - Search for a song" +
+                    "\n\t 3 - Search for an album" +
+                    "\n\t 4 - Print the current playlist of songs" +
+                    "\n\t 5 - Print the current playlist of albums" +
+                    "\n\t 6 - Back to main menu");
 
             byte selection = SCANNER.nextByte();
             switch(selection) {
@@ -214,21 +213,18 @@ public class PlaylistMain {
                     this.getPlaylist().play();
                     break;
                 case 2:
-                    this.getPlaylist().stop();
-                    break;
-                case 3:
                     this.getPlaylist().searchForSong();
                     break;
-                case 4:
+                case 3:
                     this.getPlaylist().searchForAlbum();
                     break;
-                case 5:
+                case 4:
                     this.getPlaylist().showPlaylistOfSongs();
                     break;
-                case 6:
+                case 5:
                     this.getPlaylist().showPlaylistOfAlbums();
                     break;
-                case 7:
+                case 6:
                     runApplication();
                     break;
             }
