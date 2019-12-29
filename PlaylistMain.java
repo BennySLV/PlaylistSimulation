@@ -200,7 +200,7 @@ public class PlaylistMain {
         boolean sectionRunning = true;
         while(sectionRunning) {
             System.out.println("Please select from the following options: " +
-                    "\n\t 1 - Play a song" +
+                    "\n\t 1 - Play complete playlist" +
                     "\n\t 2 - Search for a song" +
                     "\n\t 3 - Search for an album" +
                     "\n\t 4 - Print the current playlist of songs" +
@@ -211,26 +211,39 @@ public class PlaylistMain {
             switch(selection) {
                 case 1:
                     this.getPlaylist().play();
+                    playlistSection();
                     break;
                 case 2:
                     this.getPlaylist().searchForSong();
+                    if(!continueSection()) {
+                        sectionRunning = false;
+                        runApplication();
+                    }
                     break;
                 case 3:
                     this.getPlaylist().searchForAlbum();
+                    if(!continueSection()) {
+                        sectionRunning = false;
+                        runApplication();
+                    }
                     break;
                 case 4:
                     this.getPlaylist().showPlaylistOfSongs();
+                    if(!continueSection()) {
+                        sectionRunning = false;
+                        runApplication();
+                    }
                     break;
                 case 5:
                     this.getPlaylist().showPlaylistOfAlbums();
+                    if(!continueSection()) {
+                        sectionRunning = false;
+                        runApplication();
+                    }
                     break;
                 case 6:
                     runApplication();
                     break;
-            }
-            if(!continueSection()) {
-                sectionRunning = false;
-                runApplication();
             }
         }
     }
