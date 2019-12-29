@@ -42,16 +42,16 @@ public class PlaylistMain {
      * the user to either exit or continue
      * with a specific section of
      * the application.
+     *
+     * Note that line 51 simplifies the
+     * if/else statement.
+     * Therefore eliminating a potential warning
+     * identified by the IntelliJ IDE.
      */
     private static boolean exitSection() {
         System.out.print("Do you wish to continue? (Y / N) ");
         String answer = SCANNER.next();
-        if(answer.equalsIgnoreCase("No") || answer.equalsIgnoreCase("N")) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return(answer.equalsIgnoreCase("No") || answer.equalsIgnoreCase("N"));
     }
 
     /**
