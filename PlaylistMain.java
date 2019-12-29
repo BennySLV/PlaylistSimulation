@@ -39,14 +39,14 @@ public class PlaylistMain {
 
     /**
      * Functionality to allow
-     * the user to continue with
-     * a specific section of
+     * the user to either exit or continue
+     * with a specific section of
      * the application.
      */
-    private static boolean continueSection() {
+    private static boolean exitSection() {
         System.out.print("Do you wish to continue? (Y / N) ");
         String answer = SCANNER.next();
-        if(answer.equalsIgnoreCase("Yes") || answer.equalsIgnoreCase("Y")) {
+        if(answer.equalsIgnoreCase("No") || answer.equalsIgnoreCase("N")) {
             return true;
         }
         else {
@@ -55,7 +55,7 @@ public class PlaylistMain {
     }
 
     /**
-     * Song section of the application
+     * Song section of the application.
      *
      * This section of the application will
      * be used for creating, adding and removing
@@ -88,7 +88,7 @@ public class PlaylistMain {
                     runApplication();
                     break;
             }
-            if(!continueSection()) {
+            if(exitSection()) {
                 sectionRunning = false;
                 runApplication();
             }
@@ -96,7 +96,7 @@ public class PlaylistMain {
     }
 
     /**
-     * Album section of the application
+     * Album section of the application.
      *
      * This section of the application will be used
      * to create albums and add to and remove songs
@@ -141,7 +141,7 @@ public class PlaylistMain {
                     runApplication();
                     break;
             }
-            if(!continueSection()) {
+            if(exitSection()) {
                 sectionRunning = false;
                 runApplication();
             }
@@ -149,7 +149,7 @@ public class PlaylistMain {
     }
 
     /**
-     * Library selection of the application
+     * Library selection of the application.
      *
      * This section of the application will be used for adding or
      * removing songs and/or albums from the playlist.
@@ -182,7 +182,7 @@ public class PlaylistMain {
                     runApplication();
                     break;
             }
-            if(!continueSection()) {
+            if(exitSection()) {
                 sectionRunning = false;
                 runApplication();
             }
@@ -215,28 +215,28 @@ public class PlaylistMain {
                     break;
                 case 2:
                     this.getPlaylist().searchForSong();
-                    if(!continueSection()) {
+                    if(!exitSection()) {
                         sectionRunning = false;
                         runApplication();
                     }
                     break;
                 case 3:
                     this.getPlaylist().searchForAlbum();
-                    if(!continueSection()) {
+                    if(!exitSection()) {
                         sectionRunning = false;
                         runApplication();
                     }
                     break;
                 case 4:
                     this.getPlaylist().showPlaylistOfSongs();
-                    if(!continueSection()) {
+                    if(!exitSection()) {
                         sectionRunning = false;
                         runApplication();
                     }
                     break;
                 case 5:
                     this.getPlaylist().showPlaylistOfAlbums();
-                    if(!continueSection()) {
+                    if(!exitSection()) {
                         sectionRunning = false;
                         runApplication();
                     }
@@ -249,7 +249,7 @@ public class PlaylistMain {
     }
 
     /**
-     * Run the application
+     * Run the application.
      */
     private void runApplication() {
         System.out.println("Welcome to your playlist! Please select from the following options: " +
@@ -281,7 +281,7 @@ public class PlaylistMain {
     }
 
     /**
-     * Main method
+     * Main method.
      *
      * @param args The command-line arguments
      */
