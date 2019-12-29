@@ -24,8 +24,6 @@ import java.util.Scanner;
  * @author Ben Silveston
  */
 public class Playlist implements IPlaylist {
-    private Song song;
-    private Album album;
     private Library library;
     private LinkedList<Song> storedSongs;
     private LinkedList<Album> storedAlbums;
@@ -47,27 +45,6 @@ public class Playlist implements IPlaylist {
         this.storedAlbums = storedAlbums;
         this.storedSongs = storedSongs;
     }
-
-    /**
-     * Get a specific song's data
-     * from the playlist
-     *
-     * @return The current song data
-     */
-    private Song getSong() {
-        return song;
-    }
-
-    /**
-     * Get a specific album's data
-     * from the playlist.
-     *
-     * @return The current album data
-     */
-    private Album getAlbum() {
-        return album;
-    }
-
     /**
      * Get the library object data
      *
@@ -231,9 +208,9 @@ public class Playlist implements IPlaylist {
 
         if(this.getLibrary().songExistsInLibrary(songTitle)) {
             if(!songIsInPlaylist(songTitle)) {
-                this.song = new Song(songTitle, songDuration, songArtist, this.getLibrary().getCurrentTime());
-                this.addInChronologicalOrder(this.song);
-                if(this.getStoredSongs().contains(this.song)) {
+                Song song = new Song(songTitle, songDuration, songArtist, this.getLibrary().getCurrentTime());
+                this.addInChronologicalOrder(song);
+                if(this.getStoredSongs().contains(song)) {
                     System.out.println("Song has been added to the playlist successfully.");
                 }
                 else {
@@ -316,9 +293,9 @@ public class Playlist implements IPlaylist {
 
         if(this.getLibrary().albumExistsInLibrary(albumTitle)) {
             if(!albumIsInPlaylist(albumTitle)) {
-                this.album = new Album(albumTitle, albumArtist, this.getLibrary().getCurrentTime());
-                this.addInChronologicalOrder(this.album);
-                if(this.getStoredAlbums().contains(this.album)) {
+                Album album = new Album(albumTitle, albumArtist, this.getLibrary().getCurrentTime());
+                this.addInChronologicalOrder(album);
+                if(this.getStoredAlbums().contains(album)) {
                     System.out.println("Album has been added to the playlist successfully.");
                 }
             }

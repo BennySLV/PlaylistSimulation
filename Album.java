@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  * @author Ben Silveston
  */
-public class Album {
+class Album {
     private String title;
     private String artist;
     private int duration;
@@ -80,7 +80,7 @@ public class Album {
      *
      * @return The current time, represented as a timestamp
      */
-    public Timestamp getTimestamp() {
+    Timestamp getTimestamp() {
         return timestamp;
     }
 
@@ -102,8 +102,8 @@ public class Album {
      *
      * @return The total album duration
      */
-    private int calculateAlbumDuration() {
-        int totalDuration = 0;
+    int calculateAlbumDuration() {
+        int totalDuration = this.duration;
         for(int i = 0; i < this.getSongs().size(); i++) {
             totalDuration += this.getSongs().get(i).getDuration();
         }
@@ -118,8 +118,7 @@ public class Album {
      * @param duration The duration of the album (in seconds)
      * @return The formatted time as described above
      */
-    public String formatAlbumDuration(int duration) {
-        duration = calculateAlbumDuration();
+    String formatAlbumDuration(int duration) {
         int hours = duration / 60 / 60;
         int minutes = duration / 60;
         int seconds = duration % 60;

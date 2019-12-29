@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  *
  * @author Ben Silveston
  */
-public class Song {
+class Song {
     private String title;
     private String artist;
     private int duration;
