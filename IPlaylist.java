@@ -26,7 +26,7 @@ public interface IPlaylist {
      *
      * @param song The song to be added to the playlist
      */
-    boolean addInChronologicalOrder(Song song);
+    void addInChronologicalOrder(Song song);
 
     /**
      * Add all new albums to the playlist
@@ -41,7 +41,7 @@ public interface IPlaylist {
      *
      * @param album The song to be added to the playlist
      */
-    boolean addInChronologicalOrder(Album album);
+    void addInChronologicalOrder(Album album);
 
     /**
      * Add an individual song to the playlist
@@ -77,31 +77,46 @@ public interface IPlaylist {
     void removeAlbumFromPlaylist();
 
     /**
-     * Play a specific song
-     * from the playlist
+     * Play the playlist
+     * from start to finish.
+     *
+     * The first song in the
+     * playlist will therefore be played
+     * first.
      */
     void play();
 
     /**
+     * Repeat the specific song
+     * that is already playing
+     * in the playlist.
+     *
+     * In other words the song
+     * will play at least twice
+     * consecutively.
+     */
+    void repeat();
+
+    /**
      * Skip to the next song
-     * in the playlist
+     * in the playlist.
      */
     void skipForwards();
 
     /**
      * Skip to the previous song
-     * in the playlist
+     * in the playlist.
      */
     void skipBackwards();
 
     /**
-     * Search for a given song
-     * in the playlist
+     * Search for an individual song
+     * in the playlist.
      */
     void searchForSong();
 
     /**
-     * Search for a given album
+     * Search for an individual album
      * in the playlist.
      */
     void searchForAlbum();
