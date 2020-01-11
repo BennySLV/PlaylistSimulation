@@ -2,6 +2,7 @@ package Section6.LinkedListChallenge;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Java Programming Masterclass for Software Developers
@@ -90,7 +91,7 @@ class Album {
      *
      * @return The current song list
      */
-    ArrayList<Song> getSongs() {
+    List<Song> getSongs() {
         return songs;
     }
 

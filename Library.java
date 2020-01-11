@@ -1,8 +1,8 @@
 package Section6.LinkedListChallenge;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -23,8 +23,8 @@ import java.util.Scanner;
 public class Library implements ILibrary {
     private Song song;
     private Album album;
-    private ArrayList<Song> songs;
-    private ArrayList<Album> albums;
+    private List<Song> songs;
+    private List<Album> albums;
     private static final Scanner SCANNER = new Scanner(System.in);
 
     /**
@@ -36,7 +36,7 @@ public class Library implements ILibrary {
      * @param songs The list of stores songs in the library
      * @param albums The list of stored albums in the library
      */
-    Library(ArrayList<Song> songs, ArrayList<Album> albums) {
+    Library(List<Song> songs, List<Album> albums) {
         this.songs = songs;
         this.albums = albums;
     }
@@ -67,7 +67,7 @@ public class Library implements ILibrary {
      *
      * @return The current list of songs
      */
-    private ArrayList<Song> getSongs() {
+    private List<Song> getSongs() {
         return songs;
     }
 
@@ -77,7 +77,7 @@ public class Library implements ILibrary {
      *
      * @return The current list of albums
      */
-    private ArrayList<Album> getAlbums() {
+    private List<Album> getAlbums() {
         return albums;
     }
 
@@ -163,7 +163,7 @@ public class Library implements ILibrary {
             Timestamp timestamp = this.getSongs().get(i).getTimestamp();
             System.out.println(songTitle + "\n\t Artist: " + songArtist +
                     "\n\t Duration: "  + duration +
-                    "\n\t Date Added: " + timestamp) ;
+                    "\n\t Date Added: " + timestamp + "\n") ;
         }
     }
 
@@ -276,7 +276,7 @@ public class Library implements ILibrary {
         for(int i = 0; i < this.getAlbums().size(); i++) {
             if(this.getAlbums().get(i).getTitle().equalsIgnoreCase(albumTitle)) {
                 albumFound = true;
-                //break;
+                break;
             }
         }
         return albumFound;
